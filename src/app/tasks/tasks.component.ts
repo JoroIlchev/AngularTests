@@ -1,11 +1,16 @@
 import {Component, input, signal} from '@angular/core';
-import {TaskComponent} from '../task/task.component';
+import {TaskComponent} from './task.component';
+import {DUMMY_TASKS} from './dummy-tasks';
+import {Task} from './task.model';
+import {NewTaskComponent} from './new-task/new-task.component';
+import {TaskService} from './task.service';
 
 
 @Component({
   selector: 'app-tasks',
   imports: [
-    TaskComponent
+    TaskComponent,
+    NewTaskComponent
   ],
   templateUrl: './tasks.component.html',
   styleUrl: './tasks.component.css'
@@ -13,36 +18,33 @@ import {TaskComponent} from '../task/task.component';
 export class TasksComponent {
 
   user = input.required<any>();
-  tasks = [
-    {
-      id: 't1',
-      userId: 'u1',
-      title: 'Master Angular',
-      summary:
-        'Learn all the basic and advanced features of Angular & how to apply them.',
-      dueDate: '2025-12-31',
-    },
-    {
-      id: 't2',
-      userId: 'u3',
-      title: 'Build first prototype',
-      summary: 'Build a first prototype of the online shop website',
-      dueDate: '2024-05-31',
-    },
-    {
-      id: 't3',
-      userId: 'u3',
-      title: 'Prepare issue template',
-      summary:
-        'Prepare and describe an issue template which will help with project management',
-      dueDate: '2024-06-15',
-    },
-  ];
+
+  showAddTask = false;
+  private taskService: TaskService;
+
+  constructor(taskService: TaskService) {
+    this.taskService = taskService;
+  }
 
 
-  userTasksFunc() {
-    console.log(this.tasks.find(task => task.userId === this.user().id));
-    console.log(this.user().id);
-    return this.tasks.find((task) => task.userId === this.user().id);
+  get userTasksFunc(): Task [] {
+    // console.log(this.tasks.find(task => task.userId === this.user().id));
+    // console.log(this.user().id);
+    // return this.tasks.find((task) => task.userId === this.user().id);
+    return this.taskService.getAllTasks();
+  }
+
+  // deleteCompletedTask(id: string) {
+  //   console.log("Deleted :" + id);
+  //   this.taskService.completeTask(id);
+  // }
+
+  addTaskDialogOpen() {
+    this.showAddTask = true;
+  }
+
+  onAddTaskCancel() {
+    this.showAddTask = false;
   }
 }
+

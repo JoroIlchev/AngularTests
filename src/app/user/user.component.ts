@@ -1,12 +1,15 @@
 import {Component, computed, EventEmitter, input, Input, output, Output, signal} from '@angular/core';
 import {DUMMY_USERS} from '../dummy-users';
+import {CardComponent} from '../shared/card/card.component';
 
 
 const randomizer = Math.floor(Math.random() * DUMMY_USERS.length)
 
 @Component({
   selector: 'app-user',
-  imports: [],
+  imports: [
+    CardComponent
+  ],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
@@ -22,6 +25,8 @@ export class UserComponent {
   user = input.required<any>()
   imgPath = computed(() => "/" + this.user().avatar)
   selected = output<string>();
+  hasToSetActiveClass = input.required<boolean>();
+
 
   onClick() {
     // const randomizer = Math.floor(Math.random() * DUMMY_USERS.length)

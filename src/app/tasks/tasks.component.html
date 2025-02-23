@@ -1,17 +1,24 @@
 <section id="tasks">
+  @if (showAddTask) {
+    <app-new-task [userId]="user().id" (close)="onAddTaskCancel()"></app-new-task>
+  }
   <header>
     <h2>{{ user().name }}`s Tasks</h2>
     <menu>
-      <button>
+      <button (click)="addTaskDialogOpen()">
         Add Task
       </button>
     </menu>
   </header>
   <ul>
-    @for (tasky of userTasksFunc(); track tasky) {
-      <li>
-        <app-task [task]="tasky"></app-task>
-      </li>
+    @for (tasky of userTasksFunc; track tasky) {
+
+      @if (tasky.userId === user().id) {
+        <li>
+          <!--          <app-task [task]="tasky" (completedTask)="deleteCompletedTask($event)"></app-task>-->
+          <app-task [task]="tasky"></app-task>
+        </li>
+      }
     }
   </ul>
 </section>
